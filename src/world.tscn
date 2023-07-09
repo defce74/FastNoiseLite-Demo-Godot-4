@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=3 uid="uid://nrw8yqh4en57"]
+
+[ext_resource type="Script" path="res://World.gd" id="1_5p6na"]
+[ext_resource type="Texture2D" uid="uid://d10ws815dhhay" path="res://colors.png" id="1_llyad"]
+[ext_resource type="Script" path="res://Map.gd" id="2_fca5v"]
+[ext_resource type="Script" path="res://Camera.gd" id="3_ifdqj"]
+[ext_resource type="Script" path="res://Gui.gd" id="5_blgpv"]
+[ext_resource type="Script" path="res://NoiseType.gd" id="6_hy6lv"]
+[ext_resource type="Script" path="res://FractalType.gd" id="7_byjv2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i52ir"]
+texture = ExtResource("1_llyad")
+margins = Vector2i(32, 32)
+texture_region_size = Vector2i(64, 64)
+2:0/0 = 0
+4:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_cq5te"]
+sources/0 = SubResource("TileSetAtlasSource_i52ir")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_5p6na")
+
+[node name="Map" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_cq5te")
+format = 2
+script = ExtResource("2_fca5v")
+
+[node name="Camera" type="Camera2D" parent="."]
+limit_left = -1000
+limit_top = -1000
+limit_right = 17000
+limit_bottom = 17000
+limit_smoothed = true
+position_smoothing_enabled = true
+script = ExtResource("3_ifdqj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Gui" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_blgpv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Gui"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 186.0
+
+[node name="Noise" type="VBoxContainer" parent="CanvasLayer/Gui/VBoxContainer"]
+layout_mode = 2
+
+[node name="NoiseType" type="OptionButton" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
+layout_mode = 2
+script = ExtResource("6_hy6lv")
+
+[node name="Seed" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Noise/Seed"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+step = 0.0
+rounded = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Noise/Seed"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "seed: "
+
+[node name="Frequency" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Noise/Frequency"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+max_value = 0.1
+step = 0.005
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Noise/Frequency"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "freq: "
+
+[node name="Fractals" type="VBoxContainer" parent="CanvasLayer/Gui/VBoxContainer"]
+layout_mode = 2
+
+[node name="FractalType" type="OptionButton" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
+layout_mode = 2
+script = ExtResource("7_byjv2")
+
+[node name="FractalOctaves" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalOctaves"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+max_value = 10.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalOctaves"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fractal octaves: "
+
+[node name="GenerateMap" type="Button" parent="CanvasLayer/Gui/VBoxContainer"]
+layout_mode = 2
+text = "Generate Map"
+
+[connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" to="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" method="_on_item_selected"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Seed/HSlider" to="CanvasLayer/Gui" method="_on_seed_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Frequency/HSlider" to="CanvasLayer/Gui" method="_on_freq_slider_value_changed"]
+[connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" to="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" method="_on_item_selected"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalOctaves/HSlider" to="CanvasLayer/Gui" method="_on_fracOct_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Gui/VBoxContainer/GenerateMap" to="CanvasLayer/Gui" method="_on_generate_map_pressed"]
