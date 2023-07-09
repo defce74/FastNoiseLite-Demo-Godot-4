@@ -7,7 +7,9 @@ extends Control
 
 @onready var m_seedLabel: Label = $"VBoxContainer/Noise/Seed/Label"
 @onready var m_freqLabel: Label = $"VBoxContainer/Noise/Frequency/Label"
+
 @onready var m_fracOctLabel: Label = $"VBoxContainer/Fractals/FractalOctaves/Label"
+@onready var m_fracLacLabel: Label = $"VBoxContainer/Fractals/FractalLacunarity/Label"
 
 #---------------------------------
 func _on_generate_map_pressed():
@@ -32,7 +34,7 @@ func _on_fracOct_slider_value_changed(value):
 	g_map.generateWorld()
 
 #---------------------------------
-
-
-
-
+func _on_fracLac_slider_value_changed(value):
+	g_map.m_fractalLacunarity = value
+	m_fracLacLabel.set_text('fractal octaves: ' + str(g_map.m_fractalLacunarity))
+	g_map.generateWorld()

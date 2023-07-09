@@ -127,13 +127,29 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "fractal octaves: "
 
-[node name="GenerateMap" type="Button" parent="CanvasLayer/Gui/VBoxContainer"]
+[node name="FractalLacunarity" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
 layout_mode = 2
-text = "Generate Map"
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalLacunarity"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+max_value = 10.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalLacunarity"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fractal lacunarity: "
 
 [connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" to="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" method="_on_item_selected"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Seed/HSlider" to="CanvasLayer/Gui" method="_on_seed_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Frequency/HSlider" to="CanvasLayer/Gui" method="_on_freq_slider_value_changed"]
 [connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" to="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" method="_on_item_selected"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalOctaves/HSlider" to="CanvasLayer/Gui" method="_on_fracOct_slider_value_changed"]
-[connection signal="pressed" from="CanvasLayer/Gui/VBoxContainer/GenerateMap" to="CanvasLayer/Gui" method="_on_generate_map_pressed"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalLacunarity/HSlider" to="CanvasLayer/Gui" method="_on_fracLac_slider_value_changed"]
