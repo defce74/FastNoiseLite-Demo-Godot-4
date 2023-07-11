@@ -20,12 +20,25 @@ func setPosition(value: int):
 
 #---------------------------------
 func setZoom(value):
-	zoom = value
-	zoom = zoom.clamp(m_zoomMin, m_zoomMax)
+	# set_zoom(value)
+	set_zoom(value.clamp(m_zoomMin, m_zoomMax))
 
 #---------------------------------
 func _process(_delta):
-	# camera movement
+	pass # moveCamera()
+
+#---------------------------------
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP: # camera zoom in
+			setZoom(zoom + m_zoomSpeed)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN: # camera zoom out
+			setZoom(zoom - m_zoomSpeed)
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			print('get_viewport_rect(): ', get_viewport_rect())
+	
+#---------------------------------
+func moveCamera():
 	if get_viewport().get_mouse_position().x < 0:
 		setPosition(m_cameraMovement.left)
 	if get_viewport().get_mouse_position().x > get_viewport_rect().end.x:
@@ -36,10 +49,5 @@ func _process(_delta):
 		setPosition(m_cameraMovement.down)
 
 #---------------------------------
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP: # camera zoom in
-			setZoom(zoom + m_zoomSpeed)
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN: # camera zoom out
-			setZoom(zoom - m_zoomSpeed)
-	
+
+

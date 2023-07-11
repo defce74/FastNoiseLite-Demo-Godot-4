@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://nrw8yqh4en57"]
+[gd_scene load_steps=11 format=3 uid="uid://nrw8yqh4en57"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_5p6na"]
 [ext_resource type="Texture2D" uid="uid://d10ws815dhhay" path="res://colors.png" id="1_llyad"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Gui.gd" id="5_blgpv"]
 [ext_resource type="Script" path="res://NoiseType.gd" id="6_hy6lv"]
 [ext_resource type="Script" path="res://FractalType.gd" id="7_byjv2"]
+[ext_resource type="PackedScene" uid="uid://3k746bv5w2nj" path="res://gui.tscn" id="8_oun1u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i52ir"]
 texture = ExtResource("1_llyad")
@@ -16,17 +17,14 @@ texture_region_size = Vector2i(64, 64)
 4:2/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_cq5te"]
+tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_i52ir")
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_5p6na")
 
-[node name="Map" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_cq5te")
-format = 2
-script = ExtResource("2_fca5v")
-
 [node name="Camera" type="Camera2D" parent="."]
+anchor_mode = 0
 limit_left = -1000
 limit_top = -1000
 limit_right = 17000
@@ -35,7 +33,17 @@ limit_smoothed = true
 position_smoothing_enabled = true
 script = ExtResource("3_ifdqj")
 
+[node name="Map" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_cq5te")
+format = 2
+script = ExtResource("2_fca5v")
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Gui" parent="CanvasLayer2" instance=ExtResource("8_oun1u")]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Gui" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -60,7 +68,6 @@ script = ExtResource("6_hy6lv")
 
 [node name="Seed" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_constants/separation = 10
 
@@ -81,7 +88,6 @@ text = "seed: "
 
 [node name="Frequency" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_constants/separation = 10
 
@@ -147,9 +153,71 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "fractal lacunarity: "
 
+[node name="FractalGain" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalGain"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalGain"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fractal gain: "
+
+[node name="FractalWeight" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalWeight"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalWeight"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fractal weight: "
+
+[node name="FractalPingpong" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalPingpong"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+
+[node name="Label" type="Label" parent="CanvasLayer/Gui/VBoxContainer/Fractals/FractalPingpong"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "fractal ping pong: "
+
 [connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" to="CanvasLayer/Gui/VBoxContainer/Noise/NoiseType" method="_on_item_selected"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Seed/HSlider" to="CanvasLayer/Gui" method="_on_seed_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Noise/Frequency/HSlider" to="CanvasLayer/Gui" method="_on_freq_slider_value_changed"]
 [connection signal="item_selected" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" to="CanvasLayer/Gui/VBoxContainer/Fractals/FractalType" method="_on_item_selected"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalOctaves/HSlider" to="CanvasLayer/Gui" method="_on_fracOct_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalLacunarity/HSlider" to="CanvasLayer/Gui" method="_on_fracLac_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalGain/HSlider" to="CanvasLayer/Gui" method="_on_fracGain_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalWeight/HSlider" to="CanvasLayer/Gui" method="_on_fracWeight_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Gui/VBoxContainer/Fractals/FractalPingpong/HSlider" to="CanvasLayer/Gui" method="_on_fracPingpong_slider_value_changed"]

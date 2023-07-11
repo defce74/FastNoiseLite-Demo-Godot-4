@@ -1,0 +1,93 @@
+[gd_scene load_steps=4 format=3 uid="uid://3k746bv5w2nj"]
+
+[ext_resource type="Theme" uid="uid://cxt5tdmihu36j" path="res://gui.tres" id="1_r7rlr"]
+[ext_resource type="Script" path="res://Noise.gd" id="1_vk4vd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx8ye"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.286275, 0.388235, 0.356863, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Gui" type="MarginContainer"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 200.0
+grow_vertical = 2
+size_flags_horizontal = 8
+size_flags_vertical = 2
+theme = ExtResource("1_r7rlr")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Noise" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
+script = ExtResource("1_vk4vd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Noise"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+text = "Noise"
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+
+[node name="Seed" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+max_value = 2000.0
+value = 1337.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Seed"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "seed: "
+
+[node name="Frequency" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Frequency"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+max_value = 0.1
+step = 0.001
+value = 0.01
+
+[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Frequency"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "freq: "
+
+[node name="Fractal" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
+
+[connection signal="item_selected" from="VBoxContainer/Noise/VBoxContainer/OptionButton" to="VBoxContainer/Noise" method="_on_noiseType_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Seed/HSlider" to="VBoxContainer/Noise" method="_on_seed_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Frequency/HSlider" to="VBoxContainer/Noise" method="_on_frequency_value_changed"]

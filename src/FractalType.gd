@@ -16,7 +16,6 @@ func _ready():
 func _on_item_selected(index):
 	g_map.m_fractalType = index
 	g_map.generateWorld()
-	print('g_map.m_fractalType: ', g_map.m_fractalType)
 
 #---------------------------------
 
