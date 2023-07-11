@@ -1,12 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://nrw8yqh4en57"]
+[gd_scene load_steps=10 format=3 uid="uid://nrw8yqh4en57"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_5p6na"]
 [ext_resource type="Texture2D" uid="uid://d10ws815dhhay" path="res://colors.png" id="1_llyad"]
 [ext_resource type="Script" path="res://Map.gd" id="2_fca5v"]
-[ext_resource type="Script" path="res://Camera.gd" id="3_ifdqj"]
 [ext_resource type="Script" path="res://Gui.gd" id="5_blgpv"]
-[ext_resource type="Script" path="res://NoiseType.gd" id="6_hy6lv"]
-[ext_resource type="Script" path="res://FractalType.gd" id="7_byjv2"]
 [ext_resource type="PackedScene" uid="uid://3k746bv5w2nj" path="res://gui.tscn" id="8_oun1u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i52ir"]
@@ -20,6 +17,55 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 sources/0 = SubResource("TileSetAtlasSource_i52ir")
 
+[sub_resource type="GDScript" id="GDScript_qt6ws"]
+script/source = "# NoiseType.gd
+#---------------------------------
+extends OptionButton
+
+#---------------------------------
+@onready var g_map: Map = get_tree().root.get_node(\"World\").get_node(\"Map\")
+
+#---------------------------------
+func _ready():
+	add_item('noise type simplex', FastNoiseLite.NoiseType.TYPE_SIMPLEX)
+	add_item('noise type simplex smooth', FastNoiseLite.NoiseType.TYPE_SIMPLEX_SMOOTH)
+	add_item('noise type cellular', FastNoiseLite.NoiseType.TYPE_CELLULAR)
+	add_item('noise type perlin', FastNoiseLite.NoiseType.TYPE_PERLIN)
+	add_item('noise type cubic', FastNoiseLite.NoiseType.TYPE_VALUE_CUBIC)
+	add_item('noise type value', FastNoiseLite.NoiseType.TYPE_VALUE)
+
+#---------------------------------
+func _on_item_selected(index):
+	g_map.m_noiseType = index
+	g_map.generateWorld()
+
+"
+
+[sub_resource type="GDScript" id="GDScript_3u4f7"]
+script/source = "# NoiseType.gd
+#---------------------------------
+extends OptionButton
+
+#---------------------------------
+@onready var g_map: Map = get_tree().root.get_node(\"World\").get_node(\"Map\")
+
+#---------------------------------
+func _ready():
+	add_item('fractal none', FastNoiseLite.FractalType.FRACTAL_NONE)
+	add_item('fractal fbm', FastNoiseLite.FractalType.FRACTAL_FBM)
+	add_item('fractal ridged', FastNoiseLite.FractalType.FRACTAL_RIDGED)
+	add_item('fractal ping pong', FastNoiseLite.FractalType.FRACTAL_PING_PONG)
+
+#---------------------------------
+func _on_item_selected(index):
+	g_map.m_fractalType = index
+	g_map.generateWorld()
+
+#---------------------------------
+
+
+"
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_5p6na")
 
@@ -31,7 +77,6 @@ limit_right = 17000
 limit_bottom = 17000
 limit_smoothed = true
 position_smoothing_enabled = true
-script = ExtResource("3_ifdqj")
 
 [node name="Map" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_cq5te")
@@ -64,7 +109,7 @@ layout_mode = 2
 
 [node name="NoiseType" type="OptionButton" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
 layout_mode = 2
-script = ExtResource("6_hy6lv")
+script = SubResource("GDScript_qt6ws")
 
 [node name="Seed" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Noise"]
 layout_mode = 2
@@ -111,7 +156,7 @@ layout_mode = 2
 
 [node name="FractalType" type="OptionButton" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
 layout_mode = 2
-script = ExtResource("7_byjv2")
+script = SubResource("GDScript_3u4f7")
 
 [node name="FractalOctaves" type="HBoxContainer" parent="CanvasLayer/Gui/VBoxContainer/Fractals"]
 layout_mode = 2
