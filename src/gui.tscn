@@ -294,7 +294,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 10.0
-value = 0.01
 
 [node name="Label" type="Label" parent="VBoxContainer/DomainWarp/VBoxContainer/FractalOctaves"]
 custom_minimum_size = Vector2(100, 0)

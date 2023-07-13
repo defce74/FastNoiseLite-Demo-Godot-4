@@ -10,7 +10,11 @@ texture = ExtResource("1_llyad")
 margins = Vector2i(32, 32)
 texture_region_size = Vector2i(64, 64)
 2:0/0 = 0
+6:0/0 = 0
+14:0/0 = 0
+0:2/0 = 0
 4:2/0 = 0
+2:2/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_cq5te"]
 tile_size = Vector2i(64, 64)

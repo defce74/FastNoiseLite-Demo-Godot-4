@@ -4,8 +4,12 @@ class_name Map extends TileMap
 
 #---------------------------------
 # tiles
-var m_water = Vector2i(2, 0)
-var m_grass = Vector2i(4, 2)
+var m_lightBlue = Vector2i(14, 0)
+var m_darkBlue = Vector2i(2, 0)
+var m_aqua = Vector2i(6, 0)
+var m_lightGreen = Vector2i(4, 2)
+var m_darkGreen = Vector2i(0, 2)
+var m_olive = Vector2i(2, 2)
 
 # map dimensions
 var m_mapSize: Vector2 = Vector2(256, 256)
@@ -57,8 +61,12 @@ func setScale():
 #---------------------------------
 func generateWorld():
 	var m_tileList = []
-	m_tileList.append(m_water)
-	m_tileList.append(m_grass)
+	m_tileList.append(m_darkBlue)
+	m_tileList.append(m_lightBlue)
+	m_tileList.append(m_aqua)
+	m_tileList.append(m_darkGreen)
+	m_tileList.append(m_lightGreen)
+	m_tileList.append(m_olive)
 	
 	m_noise.set_noise_type(m_noiseType)
 	m_noise.set_seed(m_seed) # randi_range(0, 500)
@@ -90,7 +98,7 @@ func generateWorld():
 			var tileToPlace: int = floori(absNoise * m_tileList.size()) # get tile the noise value corresponds to
 			tileToPlace = clamp(tileToPlace, 0, m_tileList.size()-1) # prevents invalid index err when absNoise == 1
 			
-			if tileToPlace > 1:
+			if tileToPlace > m_tileList.size()-1:
 				print('absNoise: ', absNoise)
 				print('tileToPlace: ', tileToPlace)
 			
