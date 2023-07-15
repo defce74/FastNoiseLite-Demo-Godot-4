@@ -27,53 +27,55 @@ func _ready():
 	m_fractalType.add_item('fractal ridged', FastNoiseLite.FractalType.FRACTAL_RIDGED)
 	m_fractalType.add_item('fractal ping pong', FastNoiseLite.FractalType.FRACTAL_PING_PONG)
 	
-	m_fractalType.select(g_map.m_fractalType) # init optionBox to default value
+	m_fractalType.select(g_map.m_noise.get_fractal_type())
 	
 	# init labels to default values
-	m_octavesLabel.set_text('octaves: ' + str(g_map.m_fractalOctaves))
-	m_lacunarityLabel.set_text('lacunarity: ' + str(g_map.m_fractalLacunarity))
-	m_gainLabel.set_text('gain: ' + str(g_map.m_fractalGain))
-	m_weightLabel.set_text('weight: ' + str(g_map.m_fractalWeightedStrength))
-	m_pingpongLabel.set_text('pingpong: ' + str(g_map.m_fractalPingPongStrength))
+	m_octavesLabel.set_text('octaves: ' + str(g_map.m_noise.get_fractal_octaves()))
+	m_lacunarityLabel.set_text('lacunarity: ' + str(g_map.m_noise.get_fractal_lacunarity()))
+	m_gainLabel.set_text('gain: ' + str(g_map.m_noise.get_fractal_gain()))
+	m_weightLabel.set_text('weight: ' + str(g_map.m_noise.get_fractal_weighted_strength()))
+	m_pingpongLabel.set_text('pingpong: ' + str(g_map.m_noise.get_fractal_ping_pong_strength()))
 	
 	# init sliders to default values
-	m_octaves.set_value(g_map.m_fractalOctaves)
-	m_lacunarity.set_value(g_map.m_fractalLacunarity)
-	m_gain.set_value(g_map.m_fractalGain)
-	m_weight.set_value(g_map.m_fractalWeightedStrength)
-	m_pingpong.set_value(g_map.m_fractalPingPongStrength)
+	m_octaves.set_value(g_map.m_noise.get_fractal_octaves())
+	m_lacunarity.set_value(g_map.m_noise.get_fractal_lacunarity())
+	m_gain.set_value(g_map.m_noise.get_fractal_gain())
+	m_weight.set_value(g_map.m_noise.get_fractal_weighted_strength())
+	m_pingpong.set_value(g_map.m_noise.get_fractal_ping_pong_strength())
 
 #---------------------------------
 func _on_fractalType_item_selected(index):
-	g_map.m_fractalType = index
+	g_map.m_data.m_fractalType = index
 	g_map.generateWorld()
+	m_fractalType.select(g_map.m_noise.get_fractal_type())
 
 #---------------------------------
 func _on_octave_value_changed(value):
-	g_map.m_fractalOctaves = value
-	m_octavesLabel.set_text('octaves: ' + str(g_map.m_fractalOctaves))
+	g_map.m_data.m_fractalOctaves = value
 	g_map.generateWorld()
+	m_octavesLabel.set_text('octaves: ' + str(g_map.m_noise.get_fractal_octaves()))
 
 #---------------------------------
 func _on_lacunarity_value_changed(value):
-	g_map.m_fractalLacunarity = value
-	m_lacunarityLabel.set_text('lacunarity: ' + str(g_map.m_fractalLacunarity))
+	g_map.m_data.m_fractalLacunarity = value
 	g_map.generateWorld()
+	m_lacunarityLabel.set_text('lacunarity: ' + str("%.3f" % g_map.m_noise.get_fractal_lacunarity()))
 
 #---------------------------------
 func _on_gain_value_changed(value):
-	g_map.m_fractalGain = value
-	m_gainLabel.set_text('gain: ' + str(g_map.m_fractalGain))
+	g_map.m_data.m_fractalGain = value
 	g_map.generateWorld()
+	m_gainLabel.set_text('gain: ' + str("%.3f" % g_map.m_noise.get_fractal_gain()))
 
 #---------------------------------
 func _on_weight_value_changed(value):
-	g_map.m_fractalWeightedStrength = value
-	m_weightLabel.set_text('weight: ' + str(g_map.m_fractalWeightedStrength))
+	g_map.m_data.m_fractalWeightedStrength = value
 	g_map.generateWorld()
+	m_weightLabel.set_text('weight: ' + str("%.3f" % g_map.m_noise.get_fractal_weighted_strength()))
 
 #---------------------------------
 func _on_pingpong_value_changed(value):
-	g_map.m_fractalPingPongStrength = value
-	m_pingpongLabel.set_text('pingpong: ' + str(g_map.m_fractalPingPongStrength))
+	g_map.m_data.m_fractalPingPongStrength = value
 	g_map.generateWorld()
+	m_pingpongLabel.set_text('pingpong: ' + str("%.3f" % g_map.m_noise.get_fractal_ping_pong_strength()))
+	

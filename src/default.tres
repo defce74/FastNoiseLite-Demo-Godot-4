@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="map_data" load_steps=2 format=3 uid="uid://gcnly3vd6n0l"]
+
+[ext_resource type="Script" path="res://map_data.gd" id="1_q0w01"]
+
+[resource]
+script = ExtResource("1_q0w01")
+m_layers = 4
+m_mapSize = Vector2(256, 256)
+m_noiseType = 1
+m_seed = 0
+m_freq = 0.01
+m_fractalType = 1
+m_fractalOctaves = 5
+m_fractalLacunarity = 2.0
+m_fractalGain = 0.5
+m_fractalWeightedStrength = 0.0
+m_fractalPingPongStrength = 2.0
+m_cellularReturnType = 1
+m_cellularDistanceFunction = 0
+m_cellularJitter = 0.45
+m_domainWarpEnabled = false
+m_domainType = 0
+m_domainAmplitude = 30.0
+m_domainFrequency = 0.5
+m_domainFractalType = 1
+m_domainFractalOctaves = 5
+m_domainFractalGain = 0.5
+m_domainFractalLacunarity = 6.0

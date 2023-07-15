@@ -29,26 +29,28 @@ func _ready():
 	m_distanceFunction.add_item('distance hybrid', FastNoiseLite.CellularDistanceFunction.DISTANCE_HYBRID)
 	
 	# init optionButtons to default values
-	m_returnType.select(g_map.m_cellularReturnType)
-	m_returnType.select(g_map.m_cellularDistanceFunction)
+	m_returnType.select(g_map.m_noise.get_cellular_return_type())
+	m_distanceFunction.select(g_map.m_noise.get_cellular_distance_function())
 	
 	# init label and slider to default values
-	m_jitterLabel.set_text('jitter: ' + str(g_map.m_cellularJitter))
-	m_jitter.set_value(g_map.m_cellularJitter)
+	m_jitterLabel.set_text('jitter: ' + str("%.3f" % g_map.m_noise.get_cellular_jitter()))
+	m_jitter.set_value(g_map.m_noise.get_cellular_jitter())
 
 #---------------------------------
 func _on_returnType_item_selected(index):
-	g_map.m_cellularReturnType = index
+	g_map.m_data.m_cellularReturnType = index
 	g_map.generateWorld()
+	m_returnType.select(g_map.m_noise.get_cellular_return_type())
 	
 #---------------------------------
 func _on_distanceFunction_item_selected(index):
-	g_map.m_cellularJitter = index
+	g_map.m_data.m_cellularDistanceFunction = index
 	g_map.generateWorld()
+	m_distanceFunction.select(g_map.m_noise.get_cellular_distance_function())
 
 #---------------------------------
 func _on_jitter_value_changed(value):
-	g_map.m_cellularJitter = value
-	m_jitterLabel.set_text('jitter: ' + str(g_map.m_cellularJitter))
+	g_map.m_data.m_cellularJitter = value
 	g_map.generateWorld()
+	m_jitterLabel.set_text('jitter: ' + str("%.3f" % g_map.m_noise.get_cellular_jitter()))
 

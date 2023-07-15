@@ -3,6 +3,8 @@
 class_name Map extends TileMap
 
 #---------------------------------
+@export var m_data: map_data = map_data.new()
+
 # tiles
 var m_lightBlue = Vector2i(14, 0)
 var m_darkBlue = Vector2i(2, 0)
@@ -11,50 +13,25 @@ var m_lightGreen = Vector2i(4, 2)
 var m_darkGreen = Vector2i(0, 2)
 var m_olive = Vector2i(2, 2)
 
-# map dimensions
-var m_mapSize: Vector2 = Vector2(256, 256)
-
 # random noise generator
 var m_noise = FastNoiseLite.new()
 
-# noise variables (default values)
-var m_noiseType: FastNoiseLite.NoiseType = FastNoiseLite.NoiseType.TYPE_SIMPLEX_SMOOTH
-var m_seed: int = 0
-var m_freq: float = 0.01
-
-# fractal variables (default values)
-var m_fractalType: FastNoiseLite.FractalType = FastNoiseLite.FractalType.FRACTAL_FBM
-var m_fractalOctaves: int = 5
-var m_fractalLacunarity: float = 2.0
-var m_fractalGain: float = 0.5
-var m_fractalWeightedStrength: float = 0.0 
-var m_fractalPingPongStrength: float = 2.0
-
-# cellular variables (default values)
-var m_cellularReturnType: FastNoiseLite.CellularReturnType = FastNoiseLite.CellularReturnType.RETURN_DISTANCE
-var m_cellularDistanceFunction: FastNoiseLite.CellularDistanceFunction = FastNoiseLite.CellularDistanceFunction.DISTANCE_EUCLIDEAN
-var m_cellularJitter: float = 0.45
-
-# domain warp variables (default values)
-var m_domainWarpEnabled: bool = false
-var m_domainType: FastNoiseLite.DomainWarpType = FastNoiseLite.DomainWarpType.DOMAIN_WARP_SIMPLEX
-var m_domainAmplitude: float = 30.0
-var m_domainFrequency: float = 0.05
-var m_domainFractalType: FastNoiseLite.DomainWarpFractalType = FastNoiseLite.DomainWarpFractalType.DOMAIN_WARP_FRACTAL_PROGRESSIVE
-var m_domainFractalOctaves: int = 5
-var m_domainFractalGain: float = 0.5
-var m_domainFractalLacunarity: float = 6.0
-
 #---------------------------------
 func _ready():
+	loadData('res://default.tres')
 	setScale()
 	generateWorld()
+
+#---------------------------------
+func loadData(fileName: String) -> void:
+	if ResourceLoader.exists(fileName, 'map_data'):
+		m_data = ResourceLoader.load(fileName, 'map_data')
 
 #---------------------------------
 func setScale():
 	var viewport: Vector2 = get_viewport_rect().size
 	var tileSize: Vector2 = get_tileset().get_tile_size()
-	var pixels = tileSize * m_mapSize
+	var pixels = tileSize * m_data.m_mapSize
 	
 	set_scale(viewport / pixels)
 
@@ -68,37 +45,39 @@ func generateWorld():
 	m_tileList.append(m_lightGreen)
 	m_tileList.append(m_olive)
 	
-	m_noise.set_noise_type(m_noiseType)
-	m_noise.set_seed(m_seed) # randi_range(0, 500)
-	m_noise.set_frequency(m_freq)
+	m_noise.set_noise_type(m_data.m_noiseType)
+	m_noise.set_seed(m_data.m_seed) # randi_range(0, 500)
+	m_noise.set_frequency(m_data.m_freq)
 	
-	m_noise.set_fractal_type(m_fractalType)
-	m_noise.set_fractal_octaves(m_fractalOctaves) # number of octaves to generate - 1 octave per tile
-	m_noise.set_fractal_lacunarity(m_fractalLacunarity)
-	m_noise.set_fractal_gain(m_fractalGain)
-	m_noise.set_fractal_weighted_strength(m_fractalWeightedStrength) # keep between 0 to 1
-	m_noise.set_fractal_ping_pong_strength(m_fractalPingPongStrength)
+	m_noise.set_fractal_type(m_data.m_fractalType)
+	m_noise.set_fractal_octaves(m_data.m_fractalOctaves) # number of octaves to generate - 1 octave per tile
+	m_noise.set_fractal_lacunarity(m_data.m_fractalLacunarity)
+	m_noise.set_fractal_gain(m_data.m_fractalGain)
+	m_noise.set_fractal_weighted_strength(m_data.m_fractalWeightedStrength) # keep between 0 to 1
+	m_noise.set_fractal_ping_pong_strength(m_data.m_fractalPingPongStrength)
 	
-	m_noise.set_cellular_return_type(m_cellularReturnType)
-	m_noise.set_cellular_distance_function(m_cellularDistanceFunction)
-	m_noise.set_cellular_jitter(m_cellularJitter)
+	m_noise.set_cellular_return_type(m_data.m_cellularReturnType)
+	m_noise.set_cellular_distance_function(m_data.m_cellularDistanceFunction)
+	m_noise.set_cellular_jitter(m_data.m_cellularJitter)
 	
-	m_noise.set_domain_warp_enabled(m_domainWarpEnabled)
-	m_noise.set_domain_warp_type(m_domainType)
-	m_noise.set_domain_warp_amplitude(m_domainAmplitude)
-	m_noise.set_domain_warp_frequency(m_domainFrequency)
-	m_noise.set_domain_warp_fractal_type(m_domainFractalType)
-	m_noise.set_domain_warp_fractal_octaves(m_domainFractalOctaves)
-	m_noise.set_domain_warp_fractal_gain(m_domainFractalGain)
-	m_noise.set_domain_warp_fractal_lacunarity(m_domainFractalLacunarity)
+	m_noise.set_domain_warp_enabled(m_data.m_domainWarpEnabled)
+	m_noise.set_domain_warp_type(m_data.m_domainType)
+	m_noise.set_domain_warp_amplitude(m_data.m_domainAmplitude)
+	m_noise.set_domain_warp_frequency(m_data.m_domainFrequency)
+	m_noise.set_domain_warp_fractal_type(m_data.m_domainFractalType)
+	m_noise.set_domain_warp_fractal_octaves(m_data.m_domainFractalOctaves)
+	m_noise.set_domain_warp_fractal_gain(m_data.m_domainFractalGain)
+	m_noise.set_domain_warp_fractal_lacunarity(m_data.m_domainFractalLacunarity)
 	
-	for x in range(m_mapSize.x):
-		for y in range(m_mapSize.y):
+	print('m_mapSize: ', m_data.m_mapSize)
+	for x in range(m_data.m_mapSize.x):
+		for y in range(m_data.m_mapSize.y):
 			var absNoise: float = abs(m_noise.get_noise_2d(x, y)) # get float value between -1 and 1
-			var tileToPlace: int = floori(absNoise * m_tileList.size()) # get tile the noise value corresponds to
-			tileToPlace = clamp(tileToPlace, 0, m_tileList.size()-1) # prevents invalid index err when absNoise == 1
+			var tileToPlace: int = floori(absNoise * m_data.m_layers) # get tile the noise value corresponds to
+			tileToPlace = clamp(tileToPlace, 0, m_data.m_layers-1) # prevents invalid index err when absNoise == 1
 			
-			if tileToPlace > m_tileList.size()-1:
+			# if tileToPlace > m_tileList.size()-1:
+			if tileToPlace > m_data.m_layers-1:
 				print('absNoise: ', absNoise)
 				print('tileToPlace: ', tileToPlace)
 			

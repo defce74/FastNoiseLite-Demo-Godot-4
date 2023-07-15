@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://3k746bv5w2nj"]
+[gd_scene load_steps=8 format=3 uid="uid://3k746bv5w2nj"]
 
 [ext_resource type="Theme" uid="uid://cxt5tdmihu36j" path="res://gui.tres" id="1_r7rlr"]
 [ext_resource type="Script" path="res://Noise.gd" id="1_vk4vd"]
 [ext_resource type="Script" path="res://Fractal.gd" id="3_007xf"]
 [ext_resource type="Script" path="res://Cellular.gd" id="4_fawc1"]
 [ext_resource type="Script" path="res://Domain.gd" id="5_gma6b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1xh0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx8ye"]
 content_margin_left = 10.0
@@ -33,6 +35,10 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
+[node name="Menu" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y1xh0")
+
 [node name="Noise" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
@@ -47,7 +53,41 @@ layout_mode = 2
 text = "Noise"
 horizontal_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="Layers" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Layers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+max_value = 6.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Layers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = " "
+
+[node name="MapSize" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/MapSize"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+max_value = 512.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/MapSize"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "seed: "
+
+[node name="NoiseType" type="OptionButton" parent="VBoxContainer/Noise/VBoxContainer"]
 layout_mode = 2
 
 [node name="Seed" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
@@ -129,6 +169,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 10.0
+step = 0.01
 
 [node name="Label" type="Label" parent="VBoxContainer/Fractal/VBoxContainer/Lacunarity"]
 custom_minimum_size = Vector2(100, 0)
@@ -179,6 +220,8 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
+max_value = 10.0
+step = 0.01
 
 [node name="Label" type="Label" parent="VBoxContainer/Fractal/VBoxContainer/Pingpong"]
 custom_minimum_size = Vector2(100, 0)
@@ -214,8 +257,8 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
-max_value = 10.0
-step = 0.01
+max_value = 2.0
+step = 0.001
 value = 0.01
 
 [node name="Label" type="Label" parent="VBoxContainer/Cellular/VBoxContainer/Jitter"]
@@ -272,7 +315,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 1.0
-step = 0.01
+step = 0.001
 value = 0.01
 
 [node name="Label" type="Label" parent="VBoxContainer/DomainWarp/VBoxContainer/Frequency"]
@@ -339,7 +382,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "freq: "
 
-[connection signal="item_selected" from="VBoxContainer/Noise/VBoxContainer/OptionButton" to="VBoxContainer/Noise" method="_on_noiseType_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Layers/HSlider" to="VBoxContainer/Noise" method="_on_layers_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/MapSize/HSlider" to="VBoxContainer/Noise" method="_on_mapSize_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/Noise/VBoxContainer/NoiseType" to="VBoxContainer/Noise" method="_on_noiseType_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Seed/HSlider" to="VBoxContainer/Noise" method="_on_seed_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Frequency/HSlider" to="VBoxContainer/Noise" method="_on_frequency_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/Fractal/VBoxContainer/OptionButton" to="VBoxContainer/Fractal" method="_on_fractalType_item_selected"]
