@@ -1,9 +1,10 @@
 # map_data.gd
 #---------------------------------
-class_name map_data extends Resource
+class_name MapData extends Resource
 
 #---------------------------------
 # tiles
+@export var m_fileName: String
 @export var m_layers: int # number of layers
 @export var m_mapSize: Vector2 # map dimensions (width, height)
 

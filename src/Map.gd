@@ -3,7 +3,7 @@
 class_name Map extends TileMap
 
 #---------------------------------
-@export var m_data: map_data = map_data.new()
+@export var m_data: MapData = MapData.new()
 
 # tiles
 var m_lightBlue = Vector2i(14, 0)
@@ -20,12 +20,20 @@ var m_noise = FastNoiseLite.new()
 func _ready():
 	loadData('res://default.tres')
 	setScale()
-	generateWorld()
+	generateMap()
 
 #---------------------------------
-func loadData(fileName: String) -> void:
-	if ResourceLoader.exists(fileName, 'map_data'):
-		m_data = ResourceLoader.load(fileName, 'map_data')
+func loadData(path: String) -> void:
+	if ResourceLoader.exists(path, 'MapData'):
+		m_data = ResourceLoader.load(path, 'MapData')
+
+#---------------------------------
+func saveData(path: String):
+	print('saveData path: ', path)
+	print('m_data.m_fileName: ', m_data.m_fileName)
+	m_data.m_fileName = path
+	var result = ResourceSaver.save(m_data, path)
+	assert(result == OK)
 
 #---------------------------------
 func setScale():
@@ -36,7 +44,7 @@ func setScale():
 	set_scale(viewport / pixels)
 
 #---------------------------------
-func generateWorld():
+func generateMap():
 	var m_tileList = []
 	m_tileList.append(m_darkBlue)
 	m_tileList.append(m_lightBlue)
@@ -69,7 +77,7 @@ func generateWorld():
 	m_noise.set_domain_warp_fractal_gain(m_data.m_domainFractalGain)
 	m_noise.set_domain_warp_fractal_lacunarity(m_data.m_domainFractalLacunarity)
 	
-	print('m_mapSize: ', m_data.m_mapSize)
+	# print('m_mapSize: ', m_data.m_mapSize)
 	for x in range(m_data.m_mapSize.x):
 		for y in range(m_data.m_mapSize.y):
 			var absNoise: float = abs(m_noise.get_noise_2d(x, y)) # get float value between -1 and 1

@@ -1,12 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://3k746bv5w2nj"]
 
 [ext_resource type="Theme" uid="uid://cxt5tdmihu36j" path="res://gui.tres" id="1_r7rlr"]
-[ext_resource type="Script" path="res://Noise.gd" id="1_vk4vd"]
+[ext_resource type="Script" path="res://Menu.gd" id="2_uartp"]
 [ext_resource type="Script" path="res://Fractal.gd" id="3_007xf"]
+[ext_resource type="Script" path="res://FastNoise.gd" id="3_t1nep"]
 [ext_resource type="Script" path="res://Cellular.gd" id="4_fawc1"]
-[ext_resource type="Script" path="res://Domain.gd" id="5_gma6b"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1xh0"]
+[ext_resource type="Script" path="res://DomainWarp.gd" id="6_j1wjd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vx8ye"]
 content_margin_left = 10.0
@@ -37,81 +36,104 @@ layout_mode = 2
 
 [node name="Menu" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_y1xh0")
-
-[node name="Noise" type="PanelContainer" parent="VBoxContainer"]
-layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
-script = ExtResource("1_vk4vd")
+script = ExtResource("2_uartp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Noise"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Menu"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="FileName" type="Label" parent="VBoxContainer/Menu/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Menu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Open" type="Button" parent="VBoxContainer/Menu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Open"
+
+[node name="Save" type="Button" parent="VBoxContainer/Menu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save"
+
+[node name="FastNoise" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
+script = ExtResource("3_t1nep")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/FastNoise"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 text = "Noise"
 horizontal_alignment = 1
 
-[node name="Layers" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="Layers" type="HBoxContainer" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Layers"]
+[node name="HSlider" type="HSlider" parent="VBoxContainer/FastNoise/VBoxContainer/Layers"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 6.0
 
-[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Layers"]
+[node name="Label" type="Label" parent="VBoxContainer/FastNoise/VBoxContainer/Layers"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = " "
 
-[node name="MapSize" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="MapSize" type="HBoxContainer" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/MapSize"]
+[node name="HSlider" type="HSlider" parent="VBoxContainer/FastNoise/VBoxContainer/MapSize"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 512.0
 
-[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/MapSize"]
+[node name="Label" type="Label" parent="VBoxContainer/FastNoise/VBoxContainer/MapSize"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "seed: "
 
-[node name="NoiseType" type="OptionButton" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="NoiseType" type="OptionButton" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 
-[node name="Seed" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="Seed" type="HBoxContainer" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Seed"]
+[node name="HSlider" type="HSlider" parent="VBoxContainer/FastNoise/VBoxContainer/Seed"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 max_value = 2000.0
 
-[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Seed"]
+[node name="Label" type="Label" parent="VBoxContainer/FastNoise/VBoxContainer/Seed"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "seed: "
 
-[node name="Frequency" type="HBoxContainer" parent="VBoxContainer/Noise/VBoxContainer"]
+[node name="Frequency" type="HBoxContainer" parent="VBoxContainer/FastNoise/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="HSlider" type="HSlider" parent="VBoxContainer/Noise/VBoxContainer/Frequency"]
+[node name="HSlider" type="HSlider" parent="VBoxContainer/FastNoise/VBoxContainer/Frequency"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -120,7 +142,7 @@ max_value = 0.1
 step = 0.001
 value = 0.01
 
-[node name="Label" type="Label" parent="VBoxContainer/Noise/VBoxContainer/Frequency"]
+[node name="Label" type="Label" parent="VBoxContainer/FastNoise/VBoxContainer/Frequency"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -270,7 +292,7 @@ text = "freq: "
 [node name="DomainWarp" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vx8ye")
-script = ExtResource("5_gma6b")
+script = ExtResource("6_j1wjd")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/DomainWarp"]
 layout_mode = 2
@@ -382,11 +404,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "freq: "
 
-[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Layers/HSlider" to="VBoxContainer/Noise" method="_on_layers_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/MapSize/HSlider" to="VBoxContainer/Noise" method="_on_mapSize_value_changed"]
-[connection signal="item_selected" from="VBoxContainer/Noise/VBoxContainer/NoiseType" to="VBoxContainer/Noise" method="_on_noiseType_item_selected"]
-[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Seed/HSlider" to="VBoxContainer/Noise" method="_on_seed_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/Noise/VBoxContainer/Frequency/HSlider" to="VBoxContainer/Noise" method="_on_frequency_value_changed"]
+[connection signal="pressed" from="VBoxContainer/Menu/VBoxContainer/HBoxContainer/Open" to="VBoxContainer/Menu" method="_on_open_pressed"]
+[connection signal="pressed" from="VBoxContainer/Menu/VBoxContainer/HBoxContainer/Save" to="VBoxContainer/Menu" method="_on_save_pressed"]
+[connection signal="value_changed" from="VBoxContainer/FastNoise/VBoxContainer/Layers/HSlider" to="VBoxContainer/FastNoise" method="_on_layers_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/FastNoise/VBoxContainer/MapSize/HSlider" to="VBoxContainer/FastNoise" method="_on_mapSize_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/FastNoise/VBoxContainer/NoiseType" to="VBoxContainer/FastNoise" method="_on_noiseType_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/FastNoise/VBoxContainer/Seed/HSlider" to="VBoxContainer/FastNoise" method="_on_seed_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/FastNoise/VBoxContainer/Frequency/HSlider" to="VBoxContainer/FastNoise" method="_on_frequency_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/Fractal/VBoxContainer/OptionButton" to="VBoxContainer/Fractal" method="_on_fractalType_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/Fractal/VBoxContainer/Octaves/HSlider" to="VBoxContainer/Fractal" method="_on_octave_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/Fractal/VBoxContainer/Lacunarity/HSlider" to="VBoxContainer/Fractal" method="_on_lacunarity_value_changed"]

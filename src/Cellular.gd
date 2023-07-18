@@ -1,6 +1,6 @@
 # Cellular.gd
 #---------------------------------
-extends PanelContainer
+class_name Cellular extends PanelContainer
 
 #---------------------------------
 @onready var g_map: Map = get_tree().root.get_node("World").get_node("Map")
@@ -28,29 +28,31 @@ func _ready():
 	m_distanceFunction.add_item('distance manhattan', FastNoiseLite.CellularDistanceFunction.DISTANCE_MANHATTAN)
 	m_distanceFunction.add_item('distance hybrid', FastNoiseLite.CellularDistanceFunction.DISTANCE_HYBRID)
 	
-	# init optionButtons to default values
+	m_jitterLabel.set_text('jitter: ' + str("%.3f" % g_map.m_noise.get_cellular_jitter()))
+	
+	updateControls()
+	
+#---------------------------------
+func updateControls():
 	m_returnType.select(g_map.m_noise.get_cellular_return_type())
 	m_distanceFunction.select(g_map.m_noise.get_cellular_distance_function())
-	
-	# init label and slider to default values
-	m_jitterLabel.set_text('jitter: ' + str("%.3f" % g_map.m_noise.get_cellular_jitter()))
 	m_jitter.set_value(g_map.m_noise.get_cellular_jitter())
 
 #---------------------------------
 func _on_returnType_item_selected(index):
 	g_map.m_data.m_cellularReturnType = index
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_returnType.select(g_map.m_noise.get_cellular_return_type())
 	
 #---------------------------------
 func _on_distanceFunction_item_selected(index):
 	g_map.m_data.m_cellularDistanceFunction = index
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_distanceFunction.select(g_map.m_noise.get_cellular_distance_function())
 
 #---------------------------------
 func _on_jitter_value_changed(value):
 	g_map.m_data.m_cellularJitter = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_jitterLabel.set_text('jitter: ' + str("%.3f" % g_map.m_noise.get_cellular_jitter()))
 

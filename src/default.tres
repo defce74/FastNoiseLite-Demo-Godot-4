@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="map_data" load_steps=2 format=3 uid="uid://gcnly3vd6n0l"]
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://gcnly3vd6n0l"]
 
-[ext_resource type="Script" path="res://map_data.gd" id="1_q0w01"]
+[ext_resource type="Script" path="res://mapData.gd" id="1_q0w01"]
 
 [resource]
 script = ExtResource("1_q0w01")
+m_fileName = "res://default.tres"
 m_layers = 4
 m_mapSize = Vector2(256, 256)
 m_noiseType = 1

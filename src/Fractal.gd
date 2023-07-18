@@ -1,6 +1,6 @@
 # Fractal.gd
 #---------------------------------
-extends PanelContainer
+class_name Fractal extends PanelContainer
 
 #---------------------------------
 @onready var g_map: Map = get_tree().root.get_node("World").get_node("Map")
@@ -27,8 +27,6 @@ func _ready():
 	m_fractalType.add_item('fractal ridged', FastNoiseLite.FractalType.FRACTAL_RIDGED)
 	m_fractalType.add_item('fractal ping pong', FastNoiseLite.FractalType.FRACTAL_PING_PONG)
 	
-	m_fractalType.select(g_map.m_noise.get_fractal_type())
-	
 	# init labels to default values
 	m_octavesLabel.set_text('octaves: ' + str(g_map.m_noise.get_fractal_octaves()))
 	m_lacunarityLabel.set_text('lacunarity: ' + str(g_map.m_noise.get_fractal_lacunarity()))
@@ -36,46 +34,50 @@ func _ready():
 	m_weightLabel.set_text('weight: ' + str(g_map.m_noise.get_fractal_weighted_strength()))
 	m_pingpongLabel.set_text('pingpong: ' + str(g_map.m_noise.get_fractal_ping_pong_strength()))
 	
-	# init sliders to default values
+	updateControls()
+	
+#---------------------------------
+func updateControls():
+	m_fractalType.select(g_map.m_noise.get_fractal_type())
 	m_octaves.set_value(g_map.m_noise.get_fractal_octaves())
 	m_lacunarity.set_value(g_map.m_noise.get_fractal_lacunarity())
 	m_gain.set_value(g_map.m_noise.get_fractal_gain())
 	m_weight.set_value(g_map.m_noise.get_fractal_weighted_strength())
 	m_pingpong.set_value(g_map.m_noise.get_fractal_ping_pong_strength())
-
+	
 #---------------------------------
 func _on_fractalType_item_selected(index):
 	g_map.m_data.m_fractalType = index
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_fractalType.select(g_map.m_noise.get_fractal_type())
 
 #---------------------------------
 func _on_octave_value_changed(value):
 	g_map.m_data.m_fractalOctaves = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_octavesLabel.set_text('octaves: ' + str(g_map.m_noise.get_fractal_octaves()))
 
 #---------------------------------
 func _on_lacunarity_value_changed(value):
 	g_map.m_data.m_fractalLacunarity = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_lacunarityLabel.set_text('lacunarity: ' + str("%.3f" % g_map.m_noise.get_fractal_lacunarity()))
 
 #---------------------------------
 func _on_gain_value_changed(value):
 	g_map.m_data.m_fractalGain = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_gainLabel.set_text('gain: ' + str("%.3f" % g_map.m_noise.get_fractal_gain()))
 
 #---------------------------------
 func _on_weight_value_changed(value):
 	g_map.m_data.m_fractalWeightedStrength = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_weightLabel.set_text('weight: ' + str("%.3f" % g_map.m_noise.get_fractal_weighted_strength()))
 
 #---------------------------------
 func _on_pingpong_value_changed(value):
 	g_map.m_data.m_fractalPingPongStrength = value
-	g_map.generateWorld()
+	g_map.generateMap()
 	m_pingpongLabel.set_text('pingpong: ' + str("%.3f" % g_map.m_noise.get_fractal_ping_pong_strength()))
 	
